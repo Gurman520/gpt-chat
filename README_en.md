@@ -49,6 +49,13 @@ The source image of Docker Lama is used to run Llama.
 
 [Link to the official project page](https://ollama.com/blog/ollama-is-now-available-as-an-official-docker-image)
 
+Do CMD:
+``` bash
+docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+docker exec -it ollama ollama run llama3:8b
+```
+
 ## 👨‍💻 For Developers
 
 ### Run Application

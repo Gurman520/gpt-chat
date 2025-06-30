@@ -56,6 +56,13 @@ python -c "from app.models import init_db; init_db()"
 
 [Ссылка на официальную страницу проекта](https://ollama.com/blog/ollama-is-now-available-as-an-official-docker-image)
 
+Выполнить в консоли:
+``` bash
+docker run -d -v ollama:/root/.ollama -p 11434:11434 --name ollama ollama/ollama
+
+docker exec -it ollama ollama run llama3:8b
+```
+
 ## 👨‍💻 Разработчикам
 
 ### Запуск приложения
