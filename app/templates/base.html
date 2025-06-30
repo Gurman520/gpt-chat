@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Llama Chat</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <h2>Conversations</h2>
+            <button id="new-conversation">New Conversation</button>
+            <ul id="conversation-list">
+                {% for conv in conversations %}
+                <li data-id="{{ conv.id }}">{{ conv.title }}</li>
+                {% endfor %}
+            </ul>
+        </div>
+        <div class="chat-area">
+            <div id="messages"></div>
+            <div class="input-area">
+                <input type="text" id="message-input" placeholder="Type your message..." {% if not conversations %}disabled{% endif %}>
+                <button id="send-button" {% if not conversations %}disabled{% endif %}>Send</button>
+            </div>
+        </div>
+    </div>
+    <script src="/static/script.js"></script>
+</body>
+</html>

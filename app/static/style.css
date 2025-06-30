@@ -1,0 +1,247 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    height: 100vh;
+}
+
+.container {
+    display: flex;
+    width: 100%;
+}
+
+.sidebar {
+    width: 250px;
+    background: #f0f0f0;
+    padding: 20px;
+    border-right: 1px solid #ddd;
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+}
+
+.sidebar ul {
+    list-style: none;
+    padding: 0;
+}
+
+.sidebar li {
+    padding: 8px;
+    cursor: pointer;
+    border-radius: 4px;
+    margin-bottom: 4px;
+}
+
+.sidebar li:hover {
+    background: #ddd;
+}
+
+.sidebar li.active {
+    background: #007bff;
+    color: white;
+}
+
+.chat-area {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+#messages {
+    flex: 1;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.message {
+    margin-bottom: 10px;
+    padding: 8px 12px;
+    border-radius: 4px;
+    max-width: 70%;
+}
+
+.input-area {
+    display: flex;
+    gap: 10px;
+}
+
+#message-input {
+    flex: 1;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+button {
+    padding: 10px 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+/* Индикатор загрузки */
+.loading-indicator {
+    display: inline-block;
+    margin-left: 10px;
+}
+
+.dot-flashing {
+    position: relative;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #4a6fa5;
+    color: #4a6fa5;
+    animation: dotFlashing 1s infinite linear alternate;
+    animation-delay: 0.5s;
+}
+
+.dot-flashing::before, .dot-flashing::after {
+    content: '';
+    display: inline-block;
+    position: absolute;
+    top: 0;
+    width: 10px;
+    height: 10px;
+    border-radius: 5px;
+    background-color: #4a6fa5;
+    color: #4a6fa5;
+}
+
+.dot-flashing::before {
+    left: -15px;
+    animation: dotFlashing 1s infinite alternate;
+    animation-delay: 0s;
+}
+
+.dot-flashing::after {
+    left: 15px;
+    animation: dotFlashing 1s infinite alternate;
+    animation-delay: 1s;
+}
+
+@keyframes dotFlashing {
+    0% {
+        background-color: #4a6fa5;
+    }
+    50%, 100% {
+        background-color: #d6e4ff;
+    }
+}
+
+/* Анимация печатания (альтернативный вариант) */
+.typing-indicator {
+    display: inline-flex;
+    align-items: center;
+}
+
+.typing-dot {
+    width: 8px;
+    height: 8px;
+    margin: 0 2px;
+    background-color: #6c757d;
+    border-radius: 50%;
+    opacity: 0.4;
+    animation: typingAnimation 1.4s infinite ease-in-out;
+}
+
+.typing-dot:nth-child(1) {
+    animation-delay: 0s;
+}
+
+.typing-dot:nth-child(2) {
+    animation-delay: 0.2s;
+}
+
+.typing-dot:nth-child(3) {
+    animation-delay: 0.4s;
+}
+
+@keyframes typingAnimation {
+    0%, 60%, 100% {
+        transform: translateY(0);
+        opacity: 0.4;
+    }
+    30% {
+        transform: translateY(-5px);
+        opacity: 1;
+    }
+}
+
+/* Стиль для сообщения с индикатором */
+.assistant-typing {
+    background: #f5f5f5;
+    margin-right: auto;
+    max-width: 70%;
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+}
+
+/* Обработка отображения ответа */
+
+.message {
+    white-space: pre-wrap;  /* Сохраняем переносы строк */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+}
+
+.message ul {
+    padding-left: 20px;
+    margin: 10px 0;
+}
+
+.message li {
+    margin-bottom: 5px;
+}
+
+.message code {
+    background-color: #f3f4f6;
+    padding: 2px 4px;
+    border-radius: 4px;
+    font-family: "SFMono-Regular", Consolas, "Liberation Mono", Menlo, monospace;
+    font-size: 0.9em;
+}
+
+.message pre {
+    background-color: #f3f4f6;
+    padding: 12px;
+    border-radius: 6px;
+    overflow-x: auto;
+    margin: 10px 0;
+}
+
+.message pre code {
+    background: none;
+    padding: 0;
+}
+
+/* Устанавливаем стиль сообщений */
+.assistant-message {
+    max-width: 90%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #f5f5f5;
+    margin-right: auto;
+    margin-bottom: 8px;
+}
+
+.user-message {
+    max-width: 90%;
+    padding: 12px 16px;
+    border-radius: 8px;
+    background: #e3f2fd;
+    margin-left: auto;
+    margin-bottom: 8px;
+}
