@@ -62,7 +62,8 @@ async def create_message(conversation_id: int, request: Request, db: Session = D
         response = requests.post(
             f"{LLAMA_API_URL}/api/generate",
             json={
-                "model": "llama3:8b",
+                # "model": "llama3:8b",
+                "model": "gemma3n",
                 "prompt": user_message,
                 "stream": False
             }
@@ -92,3 +93,30 @@ async def create_message(conversation_id: int, request: Request, db: Session = D
     db.refresh(assistant_msg)
     
     return assistant_msg
+
+@router.patch("/conversations/{conversation_id}", response_model=ConversationSchema)
+async def update_conversation(
+    conversation_id: int,
+    request: Request,
+    current_user: User = Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    data = await request.json()
+    new_title = data.get("title")
+    
+    if not new_title:
+        raise HTTPException(status_code=400, detail="Title is required")
+    
+    conv = db.query(Conversation).filter(
+        Conversation.id == conversation_id,
+        Conversation.user_id == current_user.id
+    ).first()
+    
+    if not conv:
+        raise HTTPException(status_code=404, detail="Conversation not found")
+    
+    conv.title = new_title
+    db.commit()
+    db.refresh(conv)
+    
+    return conv

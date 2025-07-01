@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <div class="status-bar">
-        <div class="project-name">Чат с Ламой</div>
+        <div class="project-name">Чат с модельками</div>
         <div class="user-section">
             <span id="username-display"></span>
             <button onclick="logout()">Выход</button>
@@ -17,13 +17,21 @@
         </div>
 
         <div class="sidebar">
-            <h2>Conversations</h2>
+            <h2>Чатики</h2>
             <button id="new-conversation">Новый диалог</button>
             <ul id="conversation-list">
                 {% for conv in conversations %}
                 <li data-id="{{ conv.id }}">{{ conv.title }}</li>
                 {% endfor %}
             </ul>
+            <div id="edit-modal" class="modal">
+                <div class="modal-content">
+                    <span class="close-modal">&times;</span>
+                    <h3>Редактирование название чатика</h3>
+                    <input type="text" id="edit-title-input">
+                    <button id="save-title-btn">Сохранить</button>
+                </div>
+            </div>
         </div>
         <div class="chat-area">
             <div id="messages"></div>

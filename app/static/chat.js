@@ -1,6 +1,7 @@
 let currentConversationId = null;
 let isLoading = false;
 let currentUser = null;
+let currentlyEditingId = null; // Отвечат за редактирование названия Чата
 
 // Функция для авторизованных запросов
 async function makeAuthRequest(url, options = {}) {
@@ -90,6 +91,25 @@ function setupEventListeners() {
             sendMessage();
         }
     });
+
+    // Обработчики закрытия модального окна редактирования
+    const closeBtn = document.querySelector('.close-modal');
+    closeBtn.addEventListener('click', () => {
+        document.getElementById('edit-modal').style.display = 'none';
+    });
+
+    // Обработчик открытия модального окна
+    document.querySelectorAll('.edit-conversation-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const conversationId = btn.dataset.id;
+            const currentTitle = btn.parentElement.querySelector('.conversation-title').textContent;
+            openEditModal(conversationId, currentTitle);
+        });
+    });
+
+    // Обработчик сохранения значения в модельном окне
+    document.getElementById('save-title-btn').addEventListener('click', saveConversationTitle);
 }
 
 async function loadUserConversations() {
@@ -105,6 +125,13 @@ async function loadUserConversations() {
             const li = document.createElement('li');
             li.textContent = conv.title;
             li.dataset.id = conv.id;
+            // Добавляем контейнер для названия и кнопки редактирования
+            li.innerHTML = `
+                <div class="conversation-item">
+                    <span class="conversation-title">${conv.title}</span>
+                    <button class="edit-conversation-btn" data-id="${conv.id}">✏️</button>
+                </div>
+            `;
             list.appendChild(li);
         });
         
@@ -202,7 +229,7 @@ function showLoadingIndicator() {
     const messagesContainer = document.getElementById('messages');
     messagesContainer.innerHTML += `
         <div class="assistant-typing">
-            <span>Лама думает </span>
+            <span>Моделька очень напряженно думает </span>
             <div class="typing-indicator">
                 <div class="typing-dot"></div>
                 <div class="typing-dot"></div>
@@ -224,4 +251,44 @@ window.logout = function() {
     window.location.href = '/';
 };
 
+// Функция для открытия модального окна редактирования
+function openEditModal(conversationId, currentTitle) {
+    currentlyEditingId = conversationId;
+    const modal = document.getElementById('edit-modal');
+    const input = document.getElementById('edit-title-input');
+    
+    input.value = currentTitle;
+    modal.style.display = 'block';
+}
 
+// Функция для сохранения нового названия
+async function saveConversationTitle() {
+    if (!currentlyEditingId) return;
+    
+    const newTitle = document.getElementById('edit-title-input').value.trim();
+    if (!newTitle) {
+        alert('Please enter a title');
+        return;
+    }
+    
+    try {
+        const response = await makeAuthRequest(
+            `/api/conversations/${currentlyEditingId}`,
+            {
+                method: 'PATCH',
+                body: JSON.stringify({ title: newTitle })
+            }
+        );
+        
+        if (!response.ok) throw new Error('Failed to update title');
+        
+        // Обновляем список чатов
+        await loadUserConversations();
+        
+        // Закрываем модальное окно
+        document.getElementById('edit-modal').style.display = 'none';
+    } catch (error) {
+        console.error('Error updating title:', error);
+        alert('Failed to update title');
+    }
+}
