@@ -4,13 +4,21 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Llama Chat</title>
-    <link rel="stylesheet" href="/static/style.css">
+    <link rel="stylesheet" href="/static/chat_style.css">
 </head>
 <body>
     <div class="container">
+        <div class="status-bar">
+        <div class="project-name">Чат с Ламой</div>
+        <div class="user-section">
+            <span id="username-display"></span>
+            <button onclick="logout()">Выход</button>
+        </div>
+        </div>
+
         <div class="sidebar">
             <h2>Conversations</h2>
-            <button id="new-conversation">New Conversation</button>
+            <button id="new-conversation">Новый диалог</button>
             <ul id="conversation-list">
                 {% for conv in conversations %}
                 <li data-id="{{ conv.id }}">{{ conv.title }}</li>
@@ -20,11 +28,11 @@
         <div class="chat-area">
             <div id="messages"></div>
             <div class="input-area">
-                <input type="text" id="message-input" placeholder="Type your message..." {% if not conversations %}disabled{% endif %}>
-                <button id="send-button" {% if not conversations %}disabled{% endif %}>Send</button>
+                <input type="text" id="message-input" placeholder="Type your message..." disabled>
+                <button id="send-button" disabled>Отправить</button>
             </div>
         </div>
     </div>
-    <script src="/static/script.js"></script>
+    <script src="/static/chat.js"></script>
 </body>
 </html>
