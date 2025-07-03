@@ -4,6 +4,7 @@ from ..models import User
 from ..schemas import ConversationSchema, MessageSchema
 from ..dependencies import get_current_user, get_db
 import app.applogic.chat as ch
+from app.logger import logger
 
 
 router = APIRouter()
@@ -12,17 +13,19 @@ router = APIRouter()
 async def get_conversations(
     current_user: User = Depends(get_current_user), 
     db: Session = Depends(get_db)):
+    logger.info("Отправляем список диалогов -> Вызвана функция получения")
     return ch.get_conversations(current_user, db)
 
 @router.post("/", response_model=ConversationSchema)
 async def create_conversation(
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):
+    db: Session = Depends(get_db)):
+    logger.info("Создаем новый диалог -> Вызвана функция создания")
     return ch.create_conversation(current_user, db)
 
 @router.get("/{conversation_id}/messages", response_model=list[MessageSchema])
 async def get_messages(conversation_id: int, db: Session = Depends(get_db)):
+    logger.info("Готовим отправку сообщений чата -> Вызвана функция получения")
     return ch.get_messages(conversation_id, db)
 
 
@@ -33,6 +36,7 @@ async def create_message(
     db: Session = Depends(get_db)):
     data = await request.json()
     user_message = data.get("message")
+    logger.info("Получено сообщение пользователя -> Вызвана функция генерации ответа")
     return ch.create_message(conversation_id, user_message, db)
 
 
@@ -41,8 +45,8 @@ async def update_conversation(
     conversation_id: int,
     request: Request,
     current_user: User = Depends(get_current_user),
-    db: Session = Depends(get_db)
-):   
+    db: Session = Depends(get_db)):
     data = await request.json()
     new_title = data.get("title")
+    logger.info("Получено новое наименование диалога -> Вызвана функция ренейминга")
     return ch.update_conversation(conversation_id, new_title, current_user, db)

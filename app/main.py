@@ -3,6 +3,7 @@ from fastapi.staticfiles import StaticFiles
 from .api import auth, chat, base
 from .models import init_db
 
+
 app = FastAPI()
 
 # Инициализация БД
