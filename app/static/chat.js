@@ -103,6 +103,7 @@ function setupEventListeners() {
         btn.addEventListener('click', (e) => {
             e.stopPropagation();
             const conversationId = btn.dataset.id;
+            console.log('Редактировать диалог:');
             const currentTitle = btn.parentElement.querySelector('.conversation-title').textContent;
             openEditModal(conversationId, currentTitle);
         });

@@ -45,6 +45,14 @@ body {
     color: white;
 }
 
+.sidebar li .conversation-item {
+  pointer-events: none; /* Клики проходят сквозь него к li */
+}
+
+.sidebar li .edit-conversation-btn {
+  pointer-events: auto;  /* Кнопка снова становится кликабельной */
+}
+
 .chat-area {
     flex: 1;
     display: flex;
